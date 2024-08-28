@@ -1,12 +1,17 @@
 //need to intoduce vector embedding in this,pinecode
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import people from "../PeopleData";
 import maleImg from '../Assets/male-30.jpg'
 
 export default function CallerBots() {
+
+  const navigate = useNavigate();
+
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [transcript, setTranscript] = useState("");
   const [aiResponse, setAiResponse] = useState("");
+  const [user, setUser] = useState("")
 
  
 
@@ -18,6 +23,26 @@ export default function CallerBots() {
   // console.log("hello before api")
 // console.log(api)
 // console.log("hello after api")
+
+
+const handleLogout = () => {
+  sessionStorage.clear(); // Clears all items from sessionStorage
+  alert("You have been logged out.");
+  navigate('/login');
+}
+
+
+useEffect(() => {
+  // Retrieve the user's name from sessionStorage
+  const storedUserName = sessionStorage.getItem('userEmail');
+
+  if (storedUserName) {
+      setUser(storedUserName);
+  } else {
+      // Handle the case where no user name is found, e.g., redirect to login
+      setUser('Guest');
+  }
+}, []);
 
 
   useEffect(() => {
@@ -108,7 +133,7 @@ export default function CallerBots() {
     <>
       <div className="callerName">
         <p style={{ margin: "1rem" }}>
-          Choose an AI buyer & start a roleplay conversation in &lt; 10 secs
+          hello {user} Choose an AI buyer & start a roleplay conversation in &lt; 10 secs <button onClick={handleLogout}>Logout</button>
         </p>
         <hr />
         <div>
