@@ -1,3 +1,4 @@
+//need to intoduce vector embedding in this,pinecode
 import React, { useState, useEffect } from "react";
 import people from "../PeopleData";
 import maleImg from '../Assets/male-30.jpg'
@@ -12,10 +13,11 @@ export default function CallerBots() {
   const api = process.env.REACT_APP_OPENAI_API_KEY;
 
 
+
   
-  console.log("hello before api")
-console.log(api)
-console.log("hello after api")
+  // console.log("hello before api")
+// console.log(api)
+// console.log("hello after api")
 
 
   useEffect(() => {
@@ -28,11 +30,12 @@ console.log("hello after api")
         recognition.onresult = async (event) => {
           const newTranscript = event.results[0][0].transcript;
           setTranscript(newTranscript);
-          recognition.stop();
+          // recognition.stop();
           try {
             const response = await fetchAIResponse(newTranscript);
             setAiResponse(response);
             speakText(response)
+
             recognition.start();
           } catch (error) {
             setAiResponse(`Error: ${error.message}`);
@@ -43,12 +46,12 @@ console.log("hello after api")
 
       };
 
-      // const stopRecognition = () => {
-      //   recognition.stop();
-      //   return () => {
-      //     recognition.abort();
-      //   };
-      // };
+      const stopRecognition = () => {
+        recognition.stop();
+        return () => {
+          recognition.abort();
+        };
+      };
 
       document.getElementById("start-call-btn").addEventListener("click", startRecognition);
       document.getElementById("stop-call-btn").addEventListener("click", stopRecognition);
